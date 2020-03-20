@@ -26,32 +26,7 @@ import {
 
 import GetState from "./src/components/GetState";
 import LogModule from "./src/components/Log";
-//import getData_pre from "./src/model/Storage";
-
-//import AsyncStorage from '@react-native-community/async-storage';
-
-//store n retrieve - logging 
-//storage module
-
-// _storeData = async (key,val) => {
-//   try {
-//     await AsyncStorage.setItem(key, JSON.stringify(val));
-//   } catch (error) {
-//     // Error saving data
-//   }
-// };
-
-// _retrieveData = async (key) => {
-//   try {
-//     const value = await AsyncStorage.getItem(key);
-//     if (value !== null) {
-//       // We have data!!
-//       console.log("The value of key "+ key + " is "+value);
-//     }
-//   } catch (error) {
-//     // Error retrieving data
-//   }
-// };
+import AppStorage from "./src/model/Storage";
 
 function App (){
 
@@ -81,8 +56,8 @@ function App (){
       console.log(data)
       let done = JSON.stringify(LogModule("Packet"+i, data, 'object'));
       console.log("Log Module value is "+ done);
-      // let value = getData_pre("Packet"+i);
-      // console.log(value);
+      let value = AppStorage._retrieveData("Packet"+i);
+      console.log("Value from Async Storage "+JSON.stringify(value));
       i++;
     },10000);
     return () => clearInterval(timestamp);

@@ -1,14 +1,12 @@
 import React from 'react';
-//import GetDataPref from "../model/Storage";
-//import  getData_str from "../model/Storage";
-import { SetDataPref } from "../model/Storage";
-//import setData_str from "../model/Storage";
+import AppStorage from "../model/Storage";
 
 function LogModule(logKey, logValue, logValueType){
 	if(logKey != null && logValue != null){
 		logValue = validateData(logValue, logValueType);
-		//return logValue;
-		return SetDataPref(logKey, logValue);
+		Obj = new AppStorage();
+		Obj._storeData(logKey, logValue);
+		return logValue;
 	}	
 }
 
