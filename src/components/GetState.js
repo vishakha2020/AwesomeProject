@@ -2,10 +2,10 @@ import React from 'react';
 
 function GetState(stateData, currData){
   var curr = currData.split(',');
-  var speed = parseInt(curr[4]);
+  var speed = parseFloat(curr[4]);
   console.log("speed: " + speed);
   var time = curr[8];
-  var outputData = {state: stateData.state,time: stateData.time};
+  var outputData = {state: stateData.state,time: stateData.time, speed: stateData.speed, latitude: stateData.latitude, longitude: stateData.longitude};
   if(stateData.state === "StandStill"){
     if(speed >=  5 && speed <= 30){
       // SnapshotAtSpeed();
@@ -45,12 +45,15 @@ function GetState(stateData, currData){
       outputData.time = time;
     }
   }
+  outputData.speed = speed;
+  outputData.latitude = parseFloat(curr[2]);
+  outputData.longitude = parseFloat(curr[3]);
   return outputData;
 }
 
 function detectDriving(stateData, currData){
   var curr = currData.split(',');
-  var speed = parseInt(curr[4]);
+  var speed = parseFloat(curr[4]);
   var time = curr[8];
   if(speed >= 50)
     return true;

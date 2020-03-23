@@ -48,20 +48,26 @@ function App (){
   var i = 0;
   var str = inputData[0];
   var prev = str.split(',');
-  var stateData = {state: "StandStill", time: prev[8]};
+  var stateData = {state: "StandStill", time: prev[8], speed: prev[4], latitude: prev[2], longitude:prev[3]};
 
   useEffect(() => {
     let timestamp = setInterval(() => {
       let data = GetState(stateData, inputData[i]);
-      console.log(data)
+      //console.log(data)
       let done = JSON.stringify(LogModule("Packet"+i, data, 'object'));
-      console.log("Log Module value is "+ done);
-      AppStorage._retrieveData("Packet"+i).then(function(value){
-        console.log("Value from Async Storage "+value);
-      });
-      // Promise.resolve(AppStorage._retrieveData("Packet"+i)).then(function(val){
-      //   console.log("value iiss "+val);
+      //console.log("Log Module value is "+ done);
+      // AppStorage._retrieveData("Packet"+i).then(function(value){
+      //   let dt = new Date(value.time);
+      //   dt = dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
+      //   console.log(dt+":Drive State changes to "+value.state+" at location "+value.latitude+" and "+value.longitude);
       // });
+      Promise.resolve(AppStorage._retrieveData("Packet"+i)).then(function(value){
+        value = JSON.parse(value);        
+        //console.log(value.time);
+        // let dt = new Date(value.time);
+        // dt = dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
+        console.log(value.time+":Drive State changes to "+value.state.toUpperCase()+" at location "+value.latitude+" and "+value.longitude);
+      });
       
       i++;
     },10000);
