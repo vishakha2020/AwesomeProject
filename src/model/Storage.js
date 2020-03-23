@@ -49,6 +49,7 @@ class AppStorage extends React.Component{
     _storeData = async (key,val) => {
         try {
             await AsyncStorage.setItem(key, JSON.stringify(val));
+            console.log("data stored in Async Storage");
         } catch (error) {
             // Error saving data
         }
@@ -56,7 +57,7 @@ class AppStorage extends React.Component{
 
     static _retrieveData = async (key) => {
         try {
-            const value = await AsyncStorage.getItem(key);
+             const value = await AsyncStorage.getItem(key);
             if (value !== null) {
             // We have data!!
             console.log("The value of key "+ key + " is "+value);

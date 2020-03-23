@@ -56,8 +56,13 @@ function App (){
       console.log(data)
       let done = JSON.stringify(LogModule("Packet"+i, data, 'object'));
       console.log("Log Module value is "+ done);
-      let value = AppStorage._retrieveData("Packet"+i);
-      console.log("Value from Async Storage "+JSON.stringify(value));
+      AppStorage._retrieveData("Packet"+i).then(function(value){
+        console.log("Value from Async Storage "+value);
+      });
+      // Promise.resolve(AppStorage._retrieveData("Packet"+i)).then(function(val){
+      //   console.log("value iiss "+val);
+      // });
+      
       i++;
     },10000);
     return () => clearInterval(timestamp);
