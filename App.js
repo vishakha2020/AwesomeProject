@@ -27,6 +27,7 @@ import {
 import GetState from "./src/components/GetState";
 import LogModule from "./src/components/Log";
 import AppStorage from "./src/model/Storage";
+import { apiCall } from "./src/common/ApiCaller";
 
 function App (){
 
@@ -68,7 +69,12 @@ function App (){
         // dt = dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
         console.log(value.time+":Drive State changes to "+value.state.toUpperCase()+" at location "+value.latitude+" and "+value.longitude);
       });
+      let postParam = {
+        mobile_uuid: '104744259663407', 
+        fcm_token: 'APA91bFlK9mIL5_aD3VEeiENwhKZGahEEnLvbTuuwTQZsCHNzVdkVU8bCPmd8S8XiYFzOIs8kD4OafjLx87_BLXb45Z8HDPkFk0FQNjUPZTjhZQt_aEh9C4'
+      };
       
+      let apiResp = apiCall('http://api.zoblite.com/zoblite_api/is_asset_registered', postParam);
       i++;
     },10000);
     return () => clearInterval(timestamp);
