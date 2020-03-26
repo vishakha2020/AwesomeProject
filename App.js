@@ -28,6 +28,7 @@ import GetState from "./src/components/GetState";
 import LogModule from "./src/components/Log";
 import AppStorage from "./src/model/Storage";
 import { apiCall } from "./src/common/ApiCaller";
+import { APP_CONFIG } from './src/common/Config';
 
 function App (){
 
@@ -46,15 +47,15 @@ function App (){
     11: "738097725498,PERIODIC,37.32473856,-122.02146999,3.19,IGN_ON,100,,637176505.84044,,,,,,,,10,,gps"
   }
   
-  var i = 0;
+  let i = 0;
   var str = inputData[0];
   var prev = str.split(',');
   var stateData = {state: "StandStill", time: prev[8], speed: prev[4], latitude: prev[2], longitude:prev[3]};
 
+  //Vishakha - React hook to execute code in intervals
   useEffect(() => {
-    let timestamp = setInterval(() => {
+    const timestamp = setInterval(() => {
       let data = GetState(stateData, inputData[i]);
-      //console.log(data)
       let done = JSON.stringify(LogModule("Packet"+i, data, 'object'));
       //console.log("Log Module value is "+ done);
       // AppStorage._retrieveData("Packet"+i).then(function(value){
@@ -69,16 +70,28 @@ function App (){
         // dt = dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
         console.log(value.time+":Drive State changes to "+value.state.toUpperCase()+" at location "+value.latitude+" and "+value.longitude);
       });
-      let postParam = {
-        mobile_uuid: '104744259663407', 
-        fcm_token: 'APA91bFlK9mIL5_aD3VEeiENwhKZGahEEnLvbTuuwTQZsCHNzVdkVU8bCPmd8S8XiYFzOIs8kD4OafjLx87_BLXb45Z8HDPkFk0FQNjUPZTjhZQt_aEh9C4'
-      };
       
-      let apiResp = apiCall('http://api.zoblite.com/zoblite_api/is_asset_registered', postParam);
       i++;
-    },10000);
-    return () => clearInterval(timestamp);
-  },[stateData, inputData[i]]);
+    },1000);
+    return () => {
+      if(i == 11){
+        
+        clearInterval(timestamp);
+      }
+    }
+  },[]);
+
+  let postParam = {
+    mobile_uuid: '104744259663407', 
+    fcm_token: 'APA91bFlK9mIL5_aD3VEeiENwhKZGahEEnLvbTuuwTQZsCHNzVdkVU8bCPmd8S8XiYFzOIs8kD4OafjLx87_BLXb45Z8HDPkFk0FQNjUPZTjhZQt_aEh9C4'
+  };
+  apiCall('http://api.zoblite.com/zoblite_api/is_asset_registered', postParam)
+  .then(response => {
+    LogModule("App_config", response, 'object');
+    Promise.resolve(AppStorage._retrieveData("App_config")).then(function(value){
+      console.log("Async Storage value "+value);
+    });
+  });
 
     return (
       <>

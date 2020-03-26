@@ -5,6 +5,11 @@ export function apiCall(url, postParams){
     return fetch(url, {
             method : 'POST',
             body : JSON.stringify(postParams)
-        }).then(response => response.json()).then(responseJson => {console.log(responseJson)})
+        })
+        .then(response => response.json())
+        .then(responseJson => {
+            console.log(responseJson);
+            return responseJson;
+        })
         .catch (error => {console.log(error)})
 } 

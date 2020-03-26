@@ -1,6 +1,7 @@
 import React from 'react';
 import AppStorage from "../model/Storage";
 
+//Vishakha - Function to store the data in local storage
 function LogModule(logKey, logValue, logValueType){
 	if(logKey != null && logValue != null){
 		logValue = validateData(logValue, logValueType);
@@ -10,6 +11,7 @@ function LogModule(logKey, logValue, logValueType){
 	}	
 }
 
+//Vishakha - Function to validate the data before storing locally
 function validateData(dataToValidate, dataType){
 	if(dataType == 'string'){
 		if(typeof dataToValidate == 'string') {
