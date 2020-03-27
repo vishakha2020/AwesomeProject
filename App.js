@@ -28,7 +28,8 @@ import GetState from "./src/components/GetState";
 import LogModule from "./src/components/Log";
 import AppStorage from "./src/model/Storage";
 import { apiCall } from "./src/common/ApiCaller";
-import { APP_CONFIG } from './src/common/Config';
+import DefaultPreference from 'react-native-default-preference'
+import AppConfig from './src/components/AppConfig';
 
 function App (){
 
@@ -53,45 +54,44 @@ function App (){
   var stateData = {state: "StandStill", time: prev[8], speed: prev[4], latitude: prev[2], longitude:prev[3]};
 
   //Vishakha - React hook to execute code in intervals
-  useEffect(() => {
-    const timestamp = setInterval(() => {
-      let data = GetState(stateData, inputData[i]);
-      let done = JSON.stringify(LogModule("Packet"+i, data, 'object'));
-      //console.log("Log Module value is "+ done);
-      // AppStorage._retrieveData("Packet"+i).then(function(value){
-      //   let dt = new Date(value.time);
-      //   dt = dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
-      //   console.log(dt+":Drive State changes to "+value.state+" at location "+value.latitude+" and "+value.longitude);
-      // });
-      Promise.resolve(AppStorage._retrieveData("Packet"+i)).then(function(value){
-        value = JSON.parse(value);        
-        //console.log(value.time);
-        // let dt = new Date(value.time);
-        // dt = dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
-        console.log(value.time+":Drive State changes to "+value.state.toUpperCase()+" at location "+value.latitude+" and "+value.longitude);
-      });
+  // useEffect(() => {
+  //   const timestamp = setInterval(() => {
+  //     let data = GetState(stateData, inputData[i]);
+  //     let done = JSON.stringify(LogModule("Packet"+i, data, 'object'));
+  //     //console.log("Log Module value is "+ done);
+  //     // AppStorage._retrieveData("Packet"+i).then(function(value){
+  //     //   let dt = new Date(value.time);
+  //     //   dt = dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
+  //     //   console.log(dt+":Drive State changes to "+value.state+" at location "+value.latitude+" and "+value.longitude);
+  //     // });
+  //     Promise.resolve(AppStorage._retrieveData("Packet"+i)).then(function(value){
+  //       value = JSON.parse(value);        
+  //       //console.log(value.time);
+  //       // let dt = new Date(value.time);
+  //       // dt = dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds();
+  //       console.log(value.time+":Drive State changes to "+value.state.toUpperCase()+" at location "+value.latitude+" and "+value.longitude);
+  //     });
       
-      i++;
-    },1000);
-    return () => {
-      if(i == 11){
+  //     i++;
+  //   },1000);
+  //   return () => {
+  //     if(i == 11){
         
-        clearInterval(timestamp);
-      }
-    }
-  },[]);
+  //       clearInterval(timestamp);
+  //     }
+  //   }
+  // },[]);
 
-  let postParam = {
-    mobile_uuid: '104744259663407', 
-    fcm_token: 'APA91bFlK9mIL5_aD3VEeiENwhKZGahEEnLvbTuuwTQZsCHNzVdkVU8bCPmd8S8XiYFzOIs8kD4OafjLx87_BLXb45Z8HDPkFk0FQNjUPZTjhZQt_aEh9C4'
-  };
-  apiCall('http://api.zoblite.com/zoblite_api/is_asset_registered', postParam)
-  .then(response => {
-    LogModule("App_config", response, 'object');
-    Promise.resolve(AppStorage._retrieveData("App_config")).then(function(value){
-      console.log("Async Storage value "+value);
-    });
-  });
+
+    //Vishakha - following code is on how to call a generic function for api call and store in default pref.
+    let postParam = {
+        mobile_uuid: '104744259663407', 
+        fcm_token: 'APA91bFlK9mIL5_aD3VEeiENwhKZGahEEnLvbTuuwTQZsCHNzVdkVU8bCPmd8S8XiYFzOIs8kD4OafjLx87_BLXb45Z8HDPkFk0FQNjUPZTjhZQt_aEh9C4'
+    };
+
+    let url = 'http://api.zoblite.com/zoblite_api/is_asset_registered';
+
+    //AppConfig(url,postParam, "App_Configurations", 'app_config');
 
     return (
       <>
