@@ -10,7 +10,7 @@ class ImageCapture extends React.Component {
         };
     }
 
-    chooseFile = () => {
+    chooseFile = () => {    
         var options = {
           title: 'Select Image',
           storageOptions: {
