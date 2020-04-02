@@ -8,25 +8,16 @@
 
 import React, {useEffect} from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   Button,
-  Image,
-  StatusBar,
+  Image
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-import ImageCapture from './src/components/ImageCaptureModule';
+import {ImageCapture} from './src/components/ImageCaptureModule';
 import Upload from './src/components/UploadModule';
 
 class App extends React.Component{
@@ -38,14 +29,14 @@ class App extends React.Component{
     };
   }
 
-  handleCapture = (e) => {
+  handleCapture = async(e) => {
     e.preventDefault();
-    let resp = ImageCapture();
-    console.log("handle capture response "+JSON.stringify(resp));
-    // this.setState({
-    //   filePath: resp
-    // });
-    // console.log("handle capture "+JSON.stringify(this.state.filePath.uri));
+    const resp = await ImageCapture();
+    if(resp){
+      this.setState({
+        filePath: resp
+      });
+    }
   }
   
   handleUpload = (e) => {
@@ -57,13 +48,13 @@ class App extends React.Component{
     return (
       <View style={styles.container}>
         <View style={styles.container}>
-          {/* <Image
+          <Image
             source={{ uri: this.state.filePath.uri }}
             style={{ width: 250, height: 250 }}
           />
           <Text style={{ alignItems: 'center' }}>
             {this.state.filePath.uri}
-          </Text> */}
+          </Text>
           <Button title="Choose File" onPress={this.handleCapture.bind(this)} />
           <Button title="Upload File" onPress={this.handleUpload.bind(this)} />
         </View>
